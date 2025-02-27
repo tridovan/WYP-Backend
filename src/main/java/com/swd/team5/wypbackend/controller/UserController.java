@@ -5,6 +5,7 @@ import com.swd.team5.wypbackend.dto.request.UserUpdateRequest;
 import com.swd.team5.wypbackend.dto.response.ApiResponse;
 import com.swd.team5.wypbackend.dto.response.UserResponse;
 import com.swd.team5.wypbackend.service.UserSerivce;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class UserController {
     private UserSerivce userSerivce;
 
     @PostMapping
-    public ApiResponse<UserResponse> create(@RequestBody UserCreateRequest request){
+    public ApiResponse<UserResponse> create(@Valid @RequestBody UserCreateRequest request){
         return ApiResponse.<UserResponse>builder()
                 .result(userSerivce.create(request))
                 .build();
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ApiResponse<UserResponse> update(@PathVariable String userId, @RequestBody UserUpdateRequest request){
+    public ApiResponse<UserResponse> update(@Valid @PathVariable String userId, @RequestBody UserUpdateRequest request){
         return ApiResponse.<UserResponse>builder()
                 .result(userSerivce.update(userId, request))
                 .build();
