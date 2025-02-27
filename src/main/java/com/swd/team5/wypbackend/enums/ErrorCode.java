@@ -19,7 +19,9 @@ public enum ErrorCode {
     INVALID_PASSWORD(995, "Password must be at least 8 characters 😏😏😏", HttpStatus.BAD_REQUEST ),
     INVALID_EMAIL(994, "Invalid email 😏😏😏", HttpStatus.BAD_REQUEST ),
     INVALID_PHONE(993, "The phone number must have 10 digits 😏😏😏", HttpStatus.BAD_REQUEST ),
-    UNCATEGOZIZED(992, "Unexpected error in server 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR )
+    UNCATEGOZIZED(992, "Unexpected error in server 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR ),
+    EXISTED_PERMISSION(991, "Existed permission 😏😏😏", HttpStatus.BAD_REQUEST ),
+    INVALID_PERMISSION_NAME(990, "Invalid permission name 😏😏😏", HttpStatus.BAD_REQUEST )
 
 
     ;

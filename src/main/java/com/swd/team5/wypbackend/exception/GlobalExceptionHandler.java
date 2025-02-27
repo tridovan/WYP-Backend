@@ -1,7 +1,7 @@
-package com.swd.team5.wypbackend.enums;
+package com.swd.team5.wypbackend.exception;
 
 import com.swd.team5.wypbackend.dto.response.ApiResponse;
-import com.swd.team5.wypbackend.exception.AppException;
+import com.swd.team5.wypbackend.enums.ErrorCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
