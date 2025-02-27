@@ -48,6 +48,7 @@ public class ApplicationConfig {
             if(!userRepository.existsByUsername("admin")){
                 User user = new User();
                 user.setUsername("admin");
+                user.setActive(true);
                 user.setPassword(bCryptPasswordEncoder.encode("admin"));
 
                 user.setRole(roleRepository.findById("ADMIN").orElseThrow(() -> new AppException(ErrorCode.INVALID_ROLE_AT_SERVER)));
