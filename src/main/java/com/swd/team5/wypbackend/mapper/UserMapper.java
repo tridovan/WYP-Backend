@@ -7,10 +7,11 @@ import com.swd.team5.wypbackend.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.lang.annotation.Target;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserMapper {
     @Mapping(target = "password", ignore = true)
     User toUser(UserCreateRequest request);

@@ -1,5 +1,6 @@
 package com.swd.team5.wypbackend.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,6 +17,9 @@ public class SecurityConfig {
 
     private String[] PUBLIC_ENDPOINTS = {"/users", "auth/token", "auth/introspect", "auth/logout", "auth/refresh-token"};
 
+    @Autowired
+    private JwtDecoderCustom jwtDecoderCustom;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return
@@ -23,6 +27,9 @@ public class SecurityConfig {
                         .authorizeHttpRequests(auth ->
                                 auth.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                                         .anyRequest().authenticated())
+                        .oauth2ResourceServer(oauth ->
+                                oauth.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoderCustom)))
+
                         .build();
     }
 

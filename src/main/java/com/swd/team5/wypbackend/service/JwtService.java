@@ -2,10 +2,14 @@ package com.swd.team5.wypbackend.service;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import com.swd.team5.wypbackend.entity.User;
 import com.swd.team5.wypbackend.enums.ErrorCode;
 import com.swd.team5.wypbackend.exception.AppException;
+import com.swd.team5.wypbackend.repository.InvalidateTokenRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -13,6 +17,8 @@ import org.springframework.util.CollectionUtils;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -26,6 +32,9 @@ public class JwtService {
 
     @Value("${jwt.refreshable-duration}")
     private long REFRESHABLE_DURATION;
+
+    @Autowired
+    private InvalidateTokenRepository invalidateTokenRepository;
 
 
     public JwtService() {
@@ -64,6 +73,31 @@ public class JwtService {
 
     }
 
+    public SignedJWT validateToken(String token, boolean isRefresh) throws JOSEException, ParseException {
+        //lấy thuật toán mã hóa
+        JWSVerifier verifier = new MACVerifier(secretKey);
+        //giải mã
+        SignedJWT signedJWT = SignedJWT.parse(token);
+        //verify
+        boolean verified = signedJWT.verify(verifier);
+        //so experation time
+
+        Date expirationTime = (isRefresh)
+                ? new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(REFRESHABLE_DURATION, ChronoUnit.SECONDS).toEpochMilli())
+                : signedJWT.getJWTClaimsSet().getExpirationTime();
+
+
+        if(!(verified && expirationTime.after(new Date()))){
+            System.err.println("UNAUTHENTICATED at JwtService");
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+        if(invalidateTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID())){
+            System.err.println("UNAUTHENTICATED at JwtService");
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+        return signedJWT;
+    }
+
     private String buiderScope(User user) {
         StringJoiner stringJoiner = new StringJoiner(" ");
         if(Objects.nonNull(user.getRole())){
@@ -71,5 +105,9 @@ public class JwtService {
             user.getRole().getPermissions().forEach(permission -> stringJoiner.add(permission.getName()));
         }
         return stringJoiner.toString();
+    }
+
+    public SecretKey getSecretKey() {
+        return secretKey;
     }
 }

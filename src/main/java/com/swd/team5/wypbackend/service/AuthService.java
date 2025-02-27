@@ -1,7 +1,10 @@
 package com.swd.team5.wypbackend.service;
 
+import com.nimbusds.jose.JOSEException;
 import com.swd.team5.wypbackend.dto.request.AuthRequest;
+import com.swd.team5.wypbackend.dto.request.KeyValidationRequest;
 import com.swd.team5.wypbackend.dto.response.AuthResponse;
+import com.swd.team5.wypbackend.dto.response.KeyValidationResponse;
 import com.swd.team5.wypbackend.entity.User;
 import com.swd.team5.wypbackend.enums.ErrorCode;
 import com.swd.team5.wypbackend.exception.AppException;
@@ -9,6 +12,8 @@ import com.swd.team5.wypbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
 
 @Service
 public class AuthService {
@@ -37,6 +42,22 @@ public class AuthService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
         return response;
+    }
+
+    public KeyValidationResponse verifyToken(KeyValidationRequest request) throws ParseException, JOSEException {
+        String token = request.getToken();
+        //nếu token không hợp lệ thì đã quăng exception bên kia
+        //có nghĩa qua được bên này tức là nó hợp lệ
+        boolean isValid = true;
+        try {
+            jwtService.validateToken(token, false);
+        }
+        catch (AppException e){
+            isValid = false;
+        }
+        return KeyValidationResponse.builder()
+                .valid(isValid)
+                .build();
     }
 
 
