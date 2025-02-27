@@ -44,6 +44,7 @@ public class ApplicationConfig {
 
             }
             log.warn("⚠️⚠️⚠️application start with 2 basic roles, ADMIN and USER, you can use Admin account to alter it⚠️⚠️⚠️");
+            log.warn("⚠🍎🥕admin user has bean created with default value admin/admin. please change it⚠️🥔😂️");
             if(!userRepository.existsByUsername("admin")){
                 User user = new User();
                 user.setUsername("admin");
@@ -51,7 +52,6 @@ public class ApplicationConfig {
 
                 user.setRole(roleRepository.findById("ADMIN").orElseThrow(() -> new AppException(ErrorCode.INVALID_ROLE_AT_SERVER)));
                 userRepository.save(user);
-                log.warn("⚠🍎🥕admin user has bean created with default value admin/admin. please change it⚠️🥔😂️");
             }
 
 

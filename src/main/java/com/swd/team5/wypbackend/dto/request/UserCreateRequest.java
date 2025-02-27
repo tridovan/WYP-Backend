@@ -7,6 +7,8 @@ import java.time.LocalDate;
 @ToString
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserCreateRequest {
     private String username;
     private String password;
