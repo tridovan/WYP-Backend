@@ -10,6 +10,8 @@ import com.swd.team5.wypbackend.mapper.UserMapper;
 import com.swd.team5.wypbackend.repository.RoleRepository;
 import com.swd.team5.wypbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,11 +45,13 @@ public class UserSerivce {
         return userMapper.toResponse(userRepository.save(user));
     }
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserResponse> getAll() {
 
         return userRepository.findUsersByActive(true).stream().map(userMapper::toResponse).toList();
     }
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserResponse> getAllInactive() {
 
         return userRepository.findUsersByActive(false).stream().map(userMapper::toResponse).toList();
@@ -68,11 +72,26 @@ public class UserSerivce {
 
     }
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delete(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         user.setActive(false);
         userRepository.save(user);
         return "delete successfully";
+    }
+
+    public UserResponse getUserByUsername(String username) {
+        return userMapper.toResponse(userRepository.findByUsername(username)
+                .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_EXISTED)));
+
+    }
+
+    //nhớ phải enable method security
+//    @PostAuthorize("returnObject.username.equals(authentication.name)")
+    public UserResponse getUser(String userId) {
+        return userMapper.toResponse(userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
+
     }
 }

@@ -8,6 +8,7 @@ import com.swd.team5.wypbackend.exception.AppException;
 import com.swd.team5.wypbackend.mapper.PermissionMapper;
 import com.swd.team5.wypbackend.repository.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class PermissionService {
     @Autowired
     private PermissionMapper permissionMapper;
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public PermissionResponse create(PermissionRequest request) {
         if(permissionRepository.existsById(request.getName())){
             throw new AppException(ErrorCode.EXISTED_PERMISSION);
@@ -32,6 +34,7 @@ public class PermissionService {
         return permissionRepository.findAll().stream().map(permissionMapper::toResponse).toList();
     }
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public PermissionResponse update(String permissionName, PermissionRequest request) {
         Permission permission = permissionRepository.findById(permissionName)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_PERMISSION_NAME));
@@ -41,6 +44,7 @@ public class PermissionService {
         return permissionMapper.toResponse(permission);
     }
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delete(String permissionName){
         permissionRepository.deleteById(permissionName);
         return "delete successfully";

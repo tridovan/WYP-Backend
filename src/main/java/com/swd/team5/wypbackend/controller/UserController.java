@@ -7,6 +7,8 @@ import com.swd.team5.wypbackend.dto.response.UserResponse;
 import com.swd.team5.wypbackend.service.UserSerivce;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,5 +53,21 @@ public class UserController {
                 .message(userSerivce.delete(userId))
                 .build();
     }
+    @GetMapping("/{userId}")
+    ApiResponse<UserResponse> getUser (@PathVariable String userId){
+        return ApiResponse.<UserResponse>builder()
+                .result(userSerivce.getUser(userId))
+                .build()
+    }
 
+    @GetMapping("/myinfor")
+    ApiResponse<UserResponse>getMyInfor(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        System.err.println(username);
+        return ApiResponse.<UserResponse>builder()
+                .result(userSerivce.getUserByUsername(username))
+                .build();
+
+    }
 }

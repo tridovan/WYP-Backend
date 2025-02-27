@@ -10,6 +10,7 @@ import com.swd.team5.wypbackend.mapper.RoleMapper;
 import com.swd.team5.wypbackend.repository.PermissionRepository;
 import com.swd.team5.wypbackend.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -28,6 +29,7 @@ public class RoleService {
     @Autowired
     private RoleMapper roleMapper;
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RoleResponse create(RoleRequest request) {
         if(roleRepository.existsById(request.getName())){
             throw new AppException(ErrorCode.EXISTED_ROLE);
@@ -39,12 +41,14 @@ public class RoleService {
         return roleMapper.toResponse(roleRepository.save(role));
     }
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<RoleResponse> getAll() {
         List<Role> roles = roleRepository.findAll();
         return roles.stream().map(roleMapper::toResponse).toList();
     }
 
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delete(String roleName) {
         Role role = roleRepository.findById(roleName)
                         .orElseThrow(() -> new AppException(ErrorCode.INVALID_ROLE));
@@ -52,6 +56,7 @@ public class RoleService {
         return "Delete successfully 👙";
     }
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RoleResponse update(String roleName, RoleRequest request) {
         Role role = roleRepository.findById(roleName)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_ROLE));

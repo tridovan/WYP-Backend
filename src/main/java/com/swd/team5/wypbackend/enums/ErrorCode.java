@@ -24,10 +24,10 @@ public enum ErrorCode {
     INVALID_PERMISSION_NAME(990, "Invalid permission name 😏😏😏", HttpStatus.BAD_REQUEST ),
     EXISTED_ROLE(989, "Existed role 😏😏😏", HttpStatus.BAD_REQUEST ),
     INVALID_USER_AND_PASSWORD(988, "Username and password can not be blank 😏😏😏", HttpStatus.BAD_REQUEST),
-    UNAUTHENTICATED(987,"User is unauthenticated" ,HttpStatus.UNAUTHORIZED ),
-    UNAUTHORIZED(986,"User is unauthorized", HttpStatus.FORBIDDEN),
-    JWT_ERROR(985, "can not generate JWT", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_SECRET_KEY(984, "Can not create Secret Key", HttpStatus.INTERNAL_SERVER_ERROR)
+    UNAUTHENTICATED(987,"User is unauthenticated 😏😏😏" ,HttpStatus.UNAUTHORIZED ),
+    UNAUTHORIZED(986,"User is unauthorized 😏😏😏", HttpStatus.FORBIDDEN),
+    JWT_ERROR(985, "can not generate JWT 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_SECRET_KEY(984, "Can not create Secret Key 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR)
 
 
     ;
