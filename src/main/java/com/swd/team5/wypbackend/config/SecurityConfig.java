@@ -2,10 +2,29 @@ package com.swd.team5.wypbackend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
+
+    private String[] PUBLIC_ENDPOINTS = {"/users", "auth/token", "auth/introspect", "auth/logout", "auth/refresh-token"};
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return
+                http.csrf(csrf -> csrf.disable())
+                        .authorizeHttpRequests(auth ->
+                                auth.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                                        .anyRequest().authenticated())
+                        .build();
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){

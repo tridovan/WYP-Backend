@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT u FROM User u WHERE u.isActive = :isActive")
     List<User> findUsersByActive(@Param("isActive") Boolean isActive);
+
+    Optional<User> findByUsername(String username);
 }
