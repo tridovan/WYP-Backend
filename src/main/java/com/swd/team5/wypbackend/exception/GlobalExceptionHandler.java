@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AppException.class)
     public ResponseEntity<ApiResponse> handlingAppException(AppException exception){
         ErrorCode errorCode = exception.getErrorCode();
-
+        System.err.println(errorCode.getMessage());
         return ResponseEntity.status(errorCode.getStatus())
                             .body(ApiResponse
                                     .builder()
@@ -25,6 +25,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception){
         ErrorCode errorCode = ErrorCode.UNCATEGOZIZED;
+
+        System.err.println(exception.getMessage());
+        
         return ResponseEntity.status(errorCode.getStatus())
                 .body(ApiResponse
                         .builder()
@@ -37,8 +40,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> handlingValidateException(MethodArgumentNotValidException exception){
         String errorKey = exception.getFieldError().getDefaultMessage();
-        System.err.println(errorKey);
 
+        System.err.println(ErrorCode.valueOf(errorKey).getMessage());
 
         ErrorCode errorCode = ErrorCode.INVALID_KEY;
         try{
