@@ -18,7 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(unique = true)
+    @Column(name = "username", unique = true, columnDefinition = "varchar(255) COLLATE utf8mb4_unicode_ci")
     private String username;
     private String password;
     @ManyToOne
