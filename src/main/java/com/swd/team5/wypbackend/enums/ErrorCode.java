@@ -27,10 +27,8 @@ public enum ErrorCode {
     UNAUTHENTICATED(987,"User is unauthenticated 😏😏😏" ,HttpStatus.UNAUTHORIZED ),
     UNAUTHORIZED(986,"User is unauthorized 😏😏😏", HttpStatus.FORBIDDEN),
     JWT_ERROR(985, "can not generate JWT 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_SECRET_KEY(984, "Can not create Secret Key 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR)
-
-
-    ;
+    INVALID_SECRET_KEY(984, "Can not create Secret Key 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_TOKEN(984,"Invalid token 😏😏😏" , HttpStatus.BAD_REQUEST);
 
 
     private int code;

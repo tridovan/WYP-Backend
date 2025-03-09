@@ -20,7 +20,9 @@ import org.springframework.web.filter.CorsFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private String[] PUBLIC_ENDPOINTS = {"/users", "auth/token", "auth/introspect", "auth/logout", "auth/refresh-token"};
+    private final String[] PUBLIC_ENDPOINTS_POST = {"/users", "auth/token", "auth/introspect", "auth/logout", "auth/refresh-token", "auth/reset-password/**"};
+    private final String[] PUBLIC_ENDPOINTS_GET = {"/apidoc/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "auth/forgot-password"};
+
 
     @Autowired
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
@@ -33,8 +35,8 @@ public class SecurityConfig {
         return
                 http.csrf(csrf -> csrf.disable())
                         .authorizeHttpRequests(auth ->
-                                auth.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                                        .requestMatchers(HttpMethod.GET, "/apidoc/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                                auth.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS_POST).permitAll()
+                                        .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_GET).permitAll()
                                         .anyRequest().authenticated())
                         .oauth2ResourceServer(oauth ->
                                 oauth.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoderCustom)

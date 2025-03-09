@@ -57,7 +57,7 @@ public class UserController {
     ApiResponse<UserResponse> getUser (@PathVariable String userId){
         return ApiResponse.<UserResponse>builder()
                 .result(userSerivce.getUser(userId))
-                .build()
+                .build();
     }
 
     @GetMapping("/myinfor")

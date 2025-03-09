@@ -1,20 +1,15 @@
 package com.swd.team5.wypbackend.controller;
 
 import com.nimbusds.jose.JOSEException;
-import com.swd.team5.wypbackend.dto.request.AuthRequest;
-import com.swd.team5.wypbackend.dto.request.KeyValidationRequest;
-import com.swd.team5.wypbackend.dto.request.LogoutRequest;
-import com.swd.team5.wypbackend.dto.request.RefreshTokenRequest;
+import com.swd.team5.wypbackend.dto.request.*;
 import com.swd.team5.wypbackend.dto.response.ApiResponse;
 import com.swd.team5.wypbackend.dto.response.AuthResponse;
 import com.swd.team5.wypbackend.dto.response.AuthResponseDTO;
 import com.swd.team5.wypbackend.dto.response.KeyValidationResponse;
 import com.swd.team5.wypbackend.service.AuthService;
+import com.swd.team5.wypbackend.service.UserSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
@@ -24,6 +19,8 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+    @Autowired
+    private UserSerivce userSerivce;
 
     @PostMapping("/token")
     public ApiResponse<AuthResponse> token(@RequestBody AuthRequest request){
@@ -51,6 +48,20 @@ public class AuthController {
     public ApiResponse<AuthResponseDTO> refreshToken(@RequestBody RefreshTokenRequest request) throws ParseException, JOSEException {
         return ApiResponse.<AuthResponseDTO>builder()
                 .result(authService.refreshToken(request))
+                .build();
+    }
+
+    @GetMapping("/forgot-password")
+    public ApiResponse<Void> forgotPassword(@RequestParam String email){
+        return ApiResponse.<Void>builder()
+                .message(authService.createForgotPasswordToken(email))
+                .build();
+    }
+
+    @PostMapping("/reset-password/{email}")
+    ApiResponse<Void> resetPassword(@PathVariable String email,@RequestBody ResetPasswordRequest request){
+        return ApiResponse.<Void>builder()
+                .message(userSerivce.resetPassword(email, request))
                 .build();
     }
 

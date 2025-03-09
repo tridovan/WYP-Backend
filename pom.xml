@@ -84,6 +84,12 @@
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
 
+		<!--		mail-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 		<!-- sql server driver -->
 <!--		<dependency>-->
 <!--			<groupId>com.microsoft.sqlserver</groupId>-->
@@ -110,6 +116,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>backend-service</finalName>
 	</build>
 
 </project>

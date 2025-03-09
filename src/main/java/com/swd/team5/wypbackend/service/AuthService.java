@@ -9,15 +9,18 @@ import com.swd.team5.wypbackend.dto.request.RefreshTokenRequest;
 import com.swd.team5.wypbackend.dto.response.AuthResponse;
 import com.swd.team5.wypbackend.dto.response.AuthResponseDTO;
 import com.swd.team5.wypbackend.dto.response.KeyValidationResponse;
+import com.swd.team5.wypbackend.entity.ForgetPasswordToken;
 import com.swd.team5.wypbackend.entity.InvalidatedToken;
 import com.swd.team5.wypbackend.entity.User;
 import com.swd.team5.wypbackend.enums.ErrorCode;
 import com.swd.team5.wypbackend.exception.AppException;
+import com.swd.team5.wypbackend.repository.ForgotPasswordRepository;
 import com.swd.team5.wypbackend.repository.InvalidateTokenRepository;
 import com.swd.team5.wypbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -33,8 +36,15 @@ public class AuthService {
 
     @Autowired
     private JwtService jwtService;
+
     @Autowired
     private InvalidateTokenRepository invalidateTokenRepository;
+
+    @Autowired
+    private ForgotPasswordRepository forgotPasswordRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     public AuthResponse authendicate(AuthRequest request){
 
@@ -108,5 +118,17 @@ public class AuthService {
 
 
 
+    }
+
+    @Transactional
+    public String createForgotPasswordToken(String email) {
+        userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.INVALID_EMAIL));
+        forgotPasswordRepository.removeAllByEmail(email);
+        ForgetPasswordToken forgetPasswordToken = new ForgetPasswordToken();
+        forgetPasswordToken.setEmail(email);
+        String id = forgotPasswordRepository.save(forgetPasswordToken).getId();
+
+        emailService.SendEmail(email, "Reset password token", id);
+        return "I have sent the token to " + email;
     }
 }

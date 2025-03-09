@@ -1,12 +1,15 @@
 package com.swd.team5.wypbackend.service;
 
+import com.swd.team5.wypbackend.dto.request.ResetPasswordRequest;
 import com.swd.team5.wypbackend.dto.request.UserCreateRequest;
 import com.swd.team5.wypbackend.dto.request.UserUpdateRequest;
 import com.swd.team5.wypbackend.dto.response.UserResponse;
+import com.swd.team5.wypbackend.entity.ForgetPasswordToken;
 import com.swd.team5.wypbackend.entity.User;
 import com.swd.team5.wypbackend.enums.ErrorCode;
 import com.swd.team5.wypbackend.exception.AppException;
 import com.swd.team5.wypbackend.mapper.UserMapper;
+import com.swd.team5.wypbackend.repository.ForgotPasswordRepository;
 import com.swd.team5.wypbackend.repository.RoleRepository;
 import com.swd.team5.wypbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,6 +34,9 @@ public class UserSerivce {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private ForgotPasswordRepository forgotPasswordRepository;
 
     public UserResponse create(UserCreateRequest request) {
         if(userRepository.existsByUsername(request.getUsername())){
@@ -93,5 +100,17 @@ public class UserSerivce {
         return userMapper.toResponse(userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
 
+    }
+
+    public String resetPassword(String email, ResetPasswordRequest request) {
+        ForgetPasswordToken forgetPasswordToken = forgotPasswordRepository.findByIdAndEmail(request.getToken(), email)
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_TOKEN));
+        if(!forgetPasswordToken.getExpireTime().isBefore(LocalDateTime.now())){
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.INVALID_EMAIL));
+            user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+            userRepository.save(user);
+            return "Update password successfully";
+        }
+        return "Token has expired";
     }
 }
