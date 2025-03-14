@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class OrderDetail {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID) // Chuyển sang UUID cho kiểu String
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

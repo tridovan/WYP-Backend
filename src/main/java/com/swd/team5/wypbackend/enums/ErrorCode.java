@@ -36,10 +36,19 @@ public enum ErrorCode {
     BRAND_NOT_FOUND(981, "Brand not found 😏😏😏", HttpStatus.BAD_REQUEST),
 
     // 👉 Thêm lỗi EXISTED_PRODUCT_NAME
-    EXISTED_PRODUCT_NAME(980, "Existed product name 😏😏😏", HttpStatus.BAD_REQUEST);
+    EXISTED_PRODUCT_NAME(980, "Existed product name 😏😏😏", HttpStatus.BAD_REQUEST),
+    USER_NOT_FOUND(979, "Not found user 😏😏😏", HttpStatus.BAD_REQUEST),
+    CART_NOT_FOUND(978, "Not found cart 😏😏😏", HttpStatus.BAD_REQUEST),
+    ORDER_NOT_EXISTED(977, "Not found order 😏😏😏", HttpStatus.BAD_REQUEST),
+    ORDER_DETAIL_NOT_EXISTED(976, "Not found detail order 😏😏😏", HttpStatus.BAD_REQUEST),
+    ORDER_STATUS_NOT_EXISTED(975, "Not found status order 😏😏😏", HttpStatus.BAD_REQUEST),
+    ORDER_STATUS_ALREADY_EXISTED(974, "Already status order 😏😏😏", HttpStatus.BAD_REQUEST),
+    CUSTOMIZATION_NOT_EXISTED(973, "Not found customization 😏😏😏", HttpStatus.BAD_REQUEST),
+    CART_ITEM_NOT_EXISTED(974, "Cart item not existed 😏😏😏", HttpStatus.BAD_REQUEST);
 
 
     private int code;
     private String message;
     private HttpStatus status;
+
 }
