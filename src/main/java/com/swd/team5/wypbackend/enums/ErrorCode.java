@@ -28,7 +28,15 @@ public enum ErrorCode {
     UNAUTHORIZED(986,"User is unauthorized 😏😏😏", HttpStatus.FORBIDDEN),
     JWT_ERROR(985, "can not generate JWT 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_SECRET_KEY(984, "Can not create Secret Key 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_TOKEN(984,"Invalid token 😏😏😏" , HttpStatus.BAD_REQUEST);
+    INVALID_TOKEN(984,"Invalid token 😏😏😏" , HttpStatus.BAD_REQUEST),
+    // 👉 Thêm lỗi PRODUCT_NOT_FOUND
+    PRODUCT_NOT_FOUND(982, "Product not found 😏😏😏", HttpStatus.BAD_REQUEST),
+
+    // 👉 Thêm lỗi BRAND_NOT_FOUND
+    BRAND_NOT_FOUND(981, "Brand not found 😏😏😏", HttpStatus.BAD_REQUEST),
+
+    // 👉 Thêm lỗi EXISTED_PRODUCT_NAME
+    EXISTED_PRODUCT_NAME(980, "Existed product name 😏😏😏", HttpStatus.BAD_REQUEST);
 
 
     private int code;
