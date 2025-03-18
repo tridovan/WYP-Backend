@@ -57,6 +57,7 @@ public class AuthService {
         if(bCryptPasswordEncoder.matches(request.getPassword(), user.getPassword())){
             response.setAuth(true);
             response.setToken(jwtService.generateToken(user));
+            response.setRole(user.getRole().getName());
         }else{
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }

@@ -9,4 +9,5 @@ import lombok.Setter;
 public class AuthResponse {
     private boolean isAuth;
     private String token;
+    private String role;
 }
