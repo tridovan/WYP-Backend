@@ -28,10 +28,27 @@ public enum ErrorCode {
     UNAUTHORIZED(986,"User is unauthorized 😏😏😏", HttpStatus.FORBIDDEN),
     JWT_ERROR(985, "can not generate JWT 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_SECRET_KEY(984, "Can not create Secret Key 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_TOKEN(984,"Invalid token 😏😏😏" , HttpStatus.BAD_REQUEST);
+    INVALID_TOKEN(984,"Invalid token 😏😏😏" , HttpStatus.BAD_REQUEST),
+    // 👉 Thêm lỗi PRODUCT_NOT_FOUND
+    PRODUCT_NOT_FOUND(982, "Product not found 😏😏😏", HttpStatus.BAD_REQUEST),
+
+    // 👉 Thêm lỗi BRAND_NOT_FOUND
+    BRAND_NOT_FOUND(981, "Brand not found 😏😏😏", HttpStatus.BAD_REQUEST),
+
+    // 👉 Thêm lỗi EXISTED_PRODUCT_NAME
+    EXISTED_PRODUCT_NAME(980, "Existed product name 😏😏😏", HttpStatus.BAD_REQUEST),
+    USER_NOT_FOUND(979, "Not found user 😏😏😏", HttpStatus.BAD_REQUEST),
+    CART_NOT_FOUND(978, "Not found cart 😏😏😏", HttpStatus.BAD_REQUEST),
+    ORDER_NOT_EXISTED(977, "Not found order 😏😏😏", HttpStatus.BAD_REQUEST),
+    ORDER_DETAIL_NOT_EXISTED(976, "Not found detail order 😏😏😏", HttpStatus.BAD_REQUEST),
+    ORDER_STATUS_NOT_EXISTED(975, "Not found status order 😏😏😏", HttpStatus.BAD_REQUEST),
+    ORDER_STATUS_ALREADY_EXISTED(974, "Already status order 😏😏😏", HttpStatus.BAD_REQUEST),
+    CUSTOMIZATION_NOT_EXISTED(973, "Not found customization 😏😏😏", HttpStatus.BAD_REQUEST),
+    CART_ITEM_NOT_EXISTED(974, "Cart item not existed 😏😏😏", HttpStatus.BAD_REQUEST);
 
 
     private int code;
     private String message;
     private HttpStatus status;
+
 }
