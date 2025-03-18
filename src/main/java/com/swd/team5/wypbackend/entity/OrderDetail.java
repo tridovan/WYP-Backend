@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
@@ -15,11 +16,13 @@ import java.time.LocalDateTime;
 public class OrderDetail {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID) // Chuyển sang UUID cho kiểu String
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     private Order order;
 
     @ManyToOne
@@ -33,3 +36,4 @@ public class OrderDetail {
     private String status;
     private LocalDateTime createdAt = LocalDateTime.now();
 }
+
