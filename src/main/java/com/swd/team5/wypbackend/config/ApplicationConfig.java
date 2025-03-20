@@ -1,5 +1,6 @@
 package com.swd.team5.wypbackend.config;
 
+import com.cloudinary.Cloudinary;
 import com.swd.team5.wypbackend.entity.Role;
 import com.swd.team5.wypbackend.entity.User;
 import com.swd.team5.wypbackend.enums.ErrorCode;
@@ -8,16 +9,27 @@ import com.swd.team5.wypbackend.repository.RoleRepository;
 import com.swd.team5.wypbackend.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @Slf4j
 public class ApplicationConfig {
+    @Value("${cloudinary.cloud-name}")
+    private String cloudName;
+
+    @Value("${cloudinary.api-key}")
+    private String apiKey;
+
+    @Value("${cloudinary.api-secret}")
+    private String apiSecret;
+
     @Autowired
     private RoleRepository roleRepository;
 
@@ -54,9 +66,17 @@ public class ApplicationConfig {
                 user.setRole(roleRepository.findById("ADMIN").orElseThrow(() -> new AppException(ErrorCode.INVALID_ROLE_AT_SERVER)));
                 userRepository.save(user);
             }
-
-
         };
+    }
+
+    @Bean
+    public Cloudinary getCloudinary(){
+        Map<String, Object> config = new HashMap<>();
+        config.put("cloud_name", cloudName);
+        config.put("api_key", apiKey);
+        config.put("api_secret", apiSecret);
+        config.put("secure", true);
+        return new Cloudinary(config);
     }
 
 }

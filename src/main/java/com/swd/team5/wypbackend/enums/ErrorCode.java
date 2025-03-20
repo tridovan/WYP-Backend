@@ -28,7 +28,7 @@ public enum ErrorCode {
     UNAUTHORIZED(986,"User is unauthorized 😏😏😏", HttpStatus.FORBIDDEN),
     JWT_ERROR(985, "can not generate JWT 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_SECRET_KEY(984, "Can not create Secret Key 😏😏😏", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_TOKEN(984,"Invalid token 😏😏😏" , HttpStatus.BAD_REQUEST),
+    INVALID_TOKEN(983,"Invalid token 😏😏😏" , HttpStatus.BAD_REQUEST),
     // 👉 Thêm lỗi PRODUCT_NOT_FOUND
     PRODUCT_NOT_FOUND(982, "Product not found 😏😏😏", HttpStatus.BAD_REQUEST),
 
@@ -44,7 +44,9 @@ public enum ErrorCode {
     ORDER_STATUS_NOT_EXISTED(975, "Not found status order 😏😏😏", HttpStatus.BAD_REQUEST),
     ORDER_STATUS_ALREADY_EXISTED(974, "Already status order 😏😏😏", HttpStatus.BAD_REQUEST),
     CUSTOMIZATION_NOT_EXISTED(973, "Not found customization 😏😏😏", HttpStatus.BAD_REQUEST),
-    CART_ITEM_NOT_EXISTED(974, "Cart item not existed 😏😏😏", HttpStatus.BAD_REQUEST);
+    CART_ITEM_NOT_EXISTED(972, "Cart item not existed 😏😏😏", HttpStatus.BAD_REQUEST),
+
+    FILE_ERROR(971,"Error at file upload 😏😏😏" , HttpStatus.BAD_REQUEST),;
 
 
     private int code;
