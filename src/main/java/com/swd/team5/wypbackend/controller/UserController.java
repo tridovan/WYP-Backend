@@ -5,6 +5,7 @@ import com.swd.team5.wypbackend.dto.request.UserUpdateRequest;
 import com.swd.team5.wypbackend.dto.response.ApiResponse;
 import com.swd.team5.wypbackend.dto.response.UserResponse;
 import com.swd.team5.wypbackend.service.UserSerivce;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -69,5 +70,14 @@ public class UserController {
                 .result(userSerivce.getUserByUsername(username))
                 .build();
 
+    }
+
+    @Operation(description = "sort by")
+    @GetMapping("/list")    public ApiResponse<?> getAllUser(@RequestParam(defaultValue = "0", required = false) int pageNo,
+                                                             @RequestParam(defaultValue = "20", required = false) int pageSize,
+                                                             @RequestParam(required = false) String... sorts){
+        return ApiResponse.builder()
+                .result(userSerivce.getAllUserSortBy(pageNo, pageSize, sorts))
+                .build();
     }
 }

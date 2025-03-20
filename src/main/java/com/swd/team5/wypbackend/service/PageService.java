@@ -1,0 +1,38 @@
+package com.swd.team5.wypbackend.service;
+
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+@Service
+public class PageService {
+
+    public Pageable pageEngine(int pageNo, int pageSize, String... sorts){
+        if(pageNo > 0){
+            pageNo--;
+        }
+        List<Sort.Order> orders = new ArrayList<>();
+        for (String sort : sorts) {
+            if (Strings.isNotBlank(sort)) {
+                // field:acs|desc
+                Pattern pattern = Pattern.compile("(\\w+?)(:)(.*)");
+                Matcher matcher = pattern.matcher(sort);
+                if (matcher.find()) {
+                    if (matcher.group(3).equalsIgnoreCase("asc")) {
+                        orders.add(new Sort.Order(Sort.Direction.ASC, matcher.group(1)));
+                    } else {
+                        orders.add(new Sort.Order(Sort.Direction.DESC, matcher.group(1)));
+                    }
+                }
+            }
+        }
+        return PageRequest.of(pageNo, pageSize, Sort.by(orders));
+    }
+}
