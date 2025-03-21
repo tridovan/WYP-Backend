@@ -5,6 +5,7 @@ import com.swd.team5.wypbackend.dto.response.PageResponse;
 import com.swd.team5.wypbackend.dto.response.UserResponse;
 import com.swd.team5.wypbackend.entity.User;
 import com.swd.team5.wypbackend.service.CloudinaryService;
+import com.swd.team5.wypbackend.service.ProductService;
 import com.swd.team5.wypbackend.service.UserSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,9 @@ public class TestController {
     @Autowired
     private UserSerivce userSerivce;
 
+    @Autowired
+    private ProductService productService;
+
     @PostMapping
     public ApiResponse<String> fileUpload(@RequestParam MultipartFile file){
         return ApiResponse.<String>builder()
@@ -37,6 +41,17 @@ public class TestController {
                                                 @RequestParam(required = false) String... sorts){
         return ApiResponse.builder()
                 .result(userSerivce.getAllUserSortBy(pageNo, pageSize, sorts))
+                .build();
+    }
+
+    @GetMapping("/search")
+    public ApiResponse<?> getAll(@RequestParam(defaultValue = "0", required = false) int pageNo,
+                                 @RequestParam(defaultValue = "20", required = false) int pageSize,
+                                 @RequestParam(required = false) String brand,
+                                 @RequestParam(required = false) String sort,
+                                 @RequestParam(required = false) String... searches) {
+        return ApiResponse.builder()
+                .result(productService.advanceSearchByCriteria(pageNo, pageSize, brand, sort, searches))
                 .build();
     }
 }

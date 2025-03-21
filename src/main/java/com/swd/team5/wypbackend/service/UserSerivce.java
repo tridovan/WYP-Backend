@@ -159,7 +159,5 @@ public class UserSerivce {
                 .sortBy(sorts)
                 .items(userResponses)
                 .build();
-
-
     }
 }

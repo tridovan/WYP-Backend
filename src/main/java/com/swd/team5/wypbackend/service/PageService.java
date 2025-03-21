@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,18 +20,18 @@ public class PageService {
             pageNo--;
         }
         List<Sort.Order> orders = new ArrayList<>();
-        for (String sort : sorts) {
-            if (Strings.isNotBlank(sort)) {
-                // field:acs|desc
-                Pattern pattern = Pattern.compile("(\\w+?)(:)(.*)");
-                Matcher matcher = pattern.matcher(sort);
-                if (matcher.find()) {
-                    if (matcher.group(3).equalsIgnoreCase("asc")) {
-                        orders.add(new Sort.Order(Sort.Direction.ASC, matcher.group(1)));
-                    } else {
-                        orders.add(new Sort.Order(Sort.Direction.DESC, matcher.group(1)));
+        if(Objects.nonNull(sorts)) {
+            for (String sort : sorts) {
+                    // field:acs|desc
+                    Pattern pattern = Pattern.compile("(\\w+?)(:)(.*)");
+                    Matcher matcher = pattern.matcher(sort);
+                    if (matcher.find()) {
+                        if (matcher.group(3).equalsIgnoreCase("asc")) {
+                            orders.add(new Sort.Order(Sort.Direction.ASC, matcher.group(1)));
+                        } else {
+                            orders.add(new Sort.Order(Sort.Direction.DESC, matcher.group(1)));
+                        }
                     }
-                }
             }
         }
         return PageRequest.of(pageNo, pageSize, Sort.by(orders));
