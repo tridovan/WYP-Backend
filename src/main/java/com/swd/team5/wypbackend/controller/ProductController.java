@@ -54,4 +54,15 @@ public class ProductController {
                 .message("Deleted successfully")
                 .build();
     }
+
+    @GetMapping("/search")
+    public ApiResponse<?> getAll(@RequestParam(defaultValue = "0", required = false) int pageNo,
+                                 @RequestParam(defaultValue = "20", required = false) int pageSize,
+                                 @RequestParam(required = false) String brand,
+                                 @RequestParam(required = false) String sort,
+                                 @RequestParam(required = false) String... searches) {
+        return ApiResponse.builder()
+                .result(productService.advanceSearchByCriteria(pageNo, pageSize, brand, sort, searches))
+                .build();
+    }
 }
