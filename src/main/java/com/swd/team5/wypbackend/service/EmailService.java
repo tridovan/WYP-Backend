@@ -25,6 +25,24 @@ public class EmailService {
 
         javaMailSender.send(message);
         log.info(message.toString());
+    }
 
+    public void sendPasswordResetEmail(String to, String token) {
+        String subject = "Password Reset Request - DIYShoes";
+        String body = String.format("""
+            Hello,
+            
+            Click here to reset your password:
+            
+            http://localhost:5173/reset/%s
+            
+            If you didn't request a password reset, please ignore this email.
+            This token will expire in 30 minutes.
+            
+            Best regards,
+            DIYShoes
+            """, token);
+
+        SendEmail(to, subject, body);
     }
 }
