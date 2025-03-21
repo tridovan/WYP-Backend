@@ -34,14 +34,14 @@ public class EmailService {
             
             Click here to reset your password:
             
-            http://localhost:5173/reset/%s
+            http://localhost:5173/reset/%s/%s
             
             If you didn't request a password reset, please ignore this email.
             This token will expire in 30 minutes.
             
             Best regards,
             DIYShoes
-            """, token);
+            """, token, to);
 
         SendEmail(to, subject, body);
     }
