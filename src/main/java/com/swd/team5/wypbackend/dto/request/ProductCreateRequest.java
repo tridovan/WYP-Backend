@@ -21,6 +21,9 @@ public class ProductCreateRequest {
 
     private String image;
 
+    @NotNull(message = "INVALID_SIZE")
+    private String size;
+
     @NotNull(message = "INVALID_PRICE")
     private Double price;
 

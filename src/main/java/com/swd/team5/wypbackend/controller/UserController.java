@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @Operation(description = "sort by")
-    @GetMapping("/list")    public ApiResponse<?> getAllUser(@RequestParam(defaultValue = "0", required = false) int pageNo,
+    @GetMapping("/list")  public ApiResponse<?> getAllUser(@RequestParam(defaultValue = "0", required = false) int pageNo,
                                                              @RequestParam(defaultValue = "20", required = false) int pageSize,
                                                              @RequestParam(required = false) String... sorts){
         return ApiResponse.builder()
