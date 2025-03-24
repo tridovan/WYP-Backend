@@ -133,7 +133,7 @@ public class AuthService {
         forgetPasswordToken.setEmail(email);
         String id = forgotPasswordRepository.save(forgetPasswordToken).getId();
 
-        emailService.SendEmail(email, "Reset password token", id);
-        return "I have sent the token to " + email;
+        emailService.sendPasswordResetEmail(email, id);
+        return "Password reset instructions have been sent to " + email;
     }
 }

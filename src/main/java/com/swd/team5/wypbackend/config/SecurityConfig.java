@@ -34,15 +34,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return
                 http.csrf(csrf -> csrf.disable())
+                        .cors(cors -> cors.configurationSource(request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowCredentials(true);
+                            config.addAllowedOriginPattern("*");
+                            config.addAllowedHeader("*");
+                            config.addAllowedMethod("*");
+                            config.setMaxAge(3600L);
+                            return config;
+                        }))
                         .authorizeHttpRequests(auth ->
-                                auth.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS_POST).permitAll()
+                                auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                        .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS_POST).permitAll()
                                         .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_GET).permitAll()
                                         .anyRequest().authenticated())
                         .oauth2ResourceServer(oauth ->
                                 oauth.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoderCustom)
                                         .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                                         .authenticationEntryPoint(authenticationEntryPoint))
-
                         .build();
     }
 
@@ -59,20 +68,6 @@ public class SecurityConfig {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder(10);
-    }
-
-    @Bean
-    public CorsFilter corsFilter(){
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedOriginPattern("*");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
-
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-
-        return new CorsFilter(urlBasedCorsConfigurationSource);
     }
 
 }
