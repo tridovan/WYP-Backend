@@ -30,6 +30,7 @@ public class OrderDetail {
     private Boolean isCustomization;
     private Boolean isDeposit;
     private Integer price;
-    private String status;
+    @Enumerated(EnumType.STRING) // Lưu dưới dạng chuỗi trong DB
+    private OrderDetailStatus status;
     private LocalDateTime createdAt = LocalDateTime.now();
 }
