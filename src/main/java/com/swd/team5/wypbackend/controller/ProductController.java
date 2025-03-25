@@ -5,6 +5,7 @@ import com.swd.team5.wypbackend.dto.request.ProductUpdateRequest;
 import com.swd.team5.wypbackend.dto.response.ApiResponse;
 import com.swd.team5.wypbackend.dto.response.ProductResponse;
 import com.swd.team5.wypbackend.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
