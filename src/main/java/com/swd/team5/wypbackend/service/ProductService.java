@@ -7,6 +7,7 @@ import com.swd.team5.wypbackend.dto.response.ProductResponse;
 import com.swd.team5.wypbackend.dto.response.UserResponse;
 import com.swd.team5.wypbackend.entity.Brand;
 import com.swd.team5.wypbackend.entity.Product;
+import com.swd.team5.wypbackend.entity.User;
 import com.swd.team5.wypbackend.enums.ErrorCode;
 import com.swd.team5.wypbackend.exception.AppException;
 import com.swd.team5.wypbackend.mapper.ProductMapper;
@@ -16,6 +17,8 @@ import com.swd.team5.wypbackend.repository.SearchRepository;
 import com.swd.team5.wypbackend.repository.criteria.SearchCriteria;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,6 +48,9 @@ public class ProductService {
 
     @Autowired
     private SearchRepository searchRepository;
+
+    @Autowired
+    private PageService pageService;
 
     public ProductResponse create(ProductCreateRequest request, MultipartFile image) {
         if (productRepository.existsByName(request.getName())) {
@@ -119,6 +125,23 @@ public class ProductService {
                 .totalElement(responses.size())
                 .sortBy(new String[] {sort})
                 .items(responses)
+                .build();
+    }
+
+    public PageResponse<?> getAllProductsSortBy(int pageNo, int pageSize, String... sorts){
+
+        Pageable pageable = pageService.pageEngine(pageNo, pageSize, sorts);
+        Page<Product> page = productRepository.findAll(pageable);
+        List<ProductResponse> productResponses = page.getContent()
+                .stream().map(productMapper::toResponse).toList();
+
+        return PageResponse.builder()
+                .pageNo(pageNo)
+                .pageSize(pageSize)
+                .totalPage(page.getTotalPages())
+                .totalElement(productResponses.size())
+                .sortBy(sorts)
+                .items(productResponses)
                 .build();
     }
 }
