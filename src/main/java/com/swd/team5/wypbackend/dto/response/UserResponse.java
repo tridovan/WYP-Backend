@@ -24,5 +24,7 @@ public class UserResponse {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private LocalDate createAt = LocalDate.now();
+    private LocalDate createAt;
+    private LocalDate updateAt;
+
 }

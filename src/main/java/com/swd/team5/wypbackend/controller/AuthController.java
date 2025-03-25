@@ -24,14 +24,14 @@ public class AuthController {
     private UserSerivce userSerivce;
 
     @PostMapping("/token")
-    @Operation(description = "get jwt token")
+    @Operation(description = "Lấy token để đăng nhập")
     public ApiResponse<AuthResponse> token(@RequestBody AuthRequest request){
         return ApiResponse.<AuthResponse>builder()
                 .result(authService.authenticate(request))
                 .build();
 
     }
-    @Operation(description = "verify token to login")
+    @Operation(description = "Xác thực token")
     @PostMapping("/introspect")
     public ApiResponse<KeyValidationResponse> authenticate(@RequestBody KeyValidationRequest token) throws ParseException, JOSEException {
 
@@ -40,7 +40,7 @@ public class AuthController {
                 .build();
     }
 
-    @Operation(description = "log out account")
+    @Operation(description = "Đăng xuất tài khoản")
     @PostMapping("/logout")
     public ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
         return ApiResponse.<Void>builder()
@@ -48,7 +48,7 @@ public class AuthController {
                 .build();
     }
 
-    @Operation(description = "refresh token")
+    @Operation(description = "Làm mới token, để duy trì phiên đăng nhập cho user")
     @PostMapping("/refresh-token")
     public ApiResponse<AuthResponseDTO> refreshToken(@RequestBody RefreshTokenRequest request) throws ParseException, JOSEException {
         return ApiResponse.<AuthResponseDTO>builder()
@@ -56,7 +56,7 @@ public class AuthController {
                 .build();
     }
 
-    @Operation(description = "forgot password")
+    @Operation(description = "quên mật khẩu, hệ thống sẽ gửi mã xác thực qua email của người dùng")
     @GetMapping("/forgot-password")
     public ApiResponse<Void> forgotPassword(@RequestParam String email){
         return ApiResponse.<Void>builder()
@@ -64,7 +64,7 @@ public class AuthController {
                 .build();
     }
 
-    @Operation(description = "reset password")
+    @Operation(description = "đặt lại mật khẩu, cần phải xác thực mã đã nhận trong mail")
     @PostMapping("/reset-password/{email}")
     ApiResponse<Void> resetPassword(@PathVariable String email,@RequestBody ResetPasswordRequest request){
         return ApiResponse.<Void>builder()
