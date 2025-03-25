@@ -31,6 +31,13 @@ public class ProductController {
                 .result(productService.getAll())
                 .build();
     }
+    @GetMapping("/customer/{productId}")
+    @Operation(description = "lay san pham bang id http://localhost:8080/products/customer/{productId}")
+    public ApiResponse<ProductResponse> getByIdForCustomer(@PathVariable Long productId) {
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.getProductById(productId))
+                .build();
+    }
 
     @GetMapping("/{productId}")
     public ApiResponse<ProductResponse> getById(@PathVariable Long productId) {

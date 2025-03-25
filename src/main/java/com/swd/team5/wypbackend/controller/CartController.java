@@ -25,8 +25,8 @@ public class CartController {
                 .build();
     }
 
-    @GetMapping("/{cartId} http://localhost:8080/carts/1")
-    @Operation(description = "lay gio hang bang cartId")
+    @GetMapping("/{cartId} ")
+    @Operation(description = "lay gio hang bang cartId http://localhost:8080/carts/1")
     public ApiResponse<CartResponse> getById(@PathVariable String cartId) {
         return ApiResponse.<CartResponse>builder()
                 .result(cartService.getById(cartId))
@@ -41,8 +41,8 @@ public class CartController {
                 .build();
     }
 
-    @DeleteMapping("/delete/{cartId} http://localhost:8080/carts/delete/6")
-    @Operation(description = "xoa gio hang")
+    @DeleteMapping("/delete/{cartId} ")
+    @Operation(description = "xoa gio hang http://localhost:8080/carts/delete/6")
     public ApiResponse<Void> delete(@PathVariable String cartId) {
         cartService.delete(cartId);
         return ApiResponse.<Void>builder()
