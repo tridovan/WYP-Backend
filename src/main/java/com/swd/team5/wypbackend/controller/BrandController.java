@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,9 +21,9 @@ public class BrandController {
 
     @PostMapping("/create")
     @Operation(description = "Tạo mới một thương hiệu - http://localhost:8080/brands/create")
-    public ApiResponse<BrandResponse> create(@Valid @RequestBody BrandCreateRequest request) {
+    public ApiResponse<BrandResponse> create(@Valid @RequestPart BrandCreateRequest request, @RequestPart MultipartFile image) {
         return ApiResponse.<BrandResponse>builder()
-                .result(brandService.createBrand(request))
+                .result(brandService.createBrand(request, image))
                 .message("Brand created successfully")
                 .build();
     }
@@ -48,9 +49,10 @@ public class BrandController {
     @PutMapping("/update/{brandId}")
     @Operation(description = "Cập nhật thương hiệu - http://localhost:8080/brands/update/{brandId}")
     public ApiResponse<BrandResponse> update(@PathVariable Long brandId,
-                                             @Valid @RequestBody BrandCreateRequest request) {
+                                             @Valid @RequestPart BrandCreateRequest request,
+                                             @RequestPart(required = false) MultipartFile image) {
         return ApiResponse.<BrandResponse>builder()
-                .result(brandService.updateBrand(brandId, request))
+                .result(brandService.updateBrand(brandId, request, image))
                 .message("Brand updated successfully")
                 .build();
     }

@@ -46,7 +46,7 @@ public class ProductService {
     @Autowired
     private SearchRepository searchRepository;
 
-    public ProductResponse create(ProductCreateRequest request, MultipartFile file) {
+    public ProductResponse create(ProductCreateRequest request, MultipartFile image) {
         if (productRepository.existsByName(request.getName())) {
             throw new AppException(ErrorCode.EXISTED_PRODUCT_NAME);
         }
@@ -56,7 +56,7 @@ public class ProductService {
 
         Product product = productMapper.toProduct(request);
         product.setBrand(brand);
-        product.setImage(cloudinaryService.upload(file));
+        product.setImage(cloudinaryService.upload(image));
 
         return productMapper.toResponse(productRepository.save(product));
     }
@@ -67,7 +67,7 @@ public class ProductService {
                 .toList();
     }
 
-    public ProductResponse update(Long productId, ProductUpdateRequest request) {
+    public ProductResponse update(Long productId, ProductUpdateRequest request, MultipartFile image) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
 
@@ -78,7 +78,7 @@ public class ProductService {
                     .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_FOUND));
             product.setBrand(brand);
         }
-
+        product.setImage(cloudinaryService.upload(image));
         return productMapper.toResponse(productRepository.save(product));
     }
 

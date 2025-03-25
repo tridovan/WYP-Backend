@@ -21,10 +21,9 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/create")
-    public ApiResponse<ProductResponse> create(@RequestParam MultipartFile file, @Valid @RequestBody ProductCreateRequest request) {
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    public ApiResponse<ProductResponse> create(@RequestPart MultipartFile image, @Valid @RequestPart ProductCreateRequest request) {
         return ApiResponse.<ProductResponse>builder()
-                .result(productService.create(request, file))
+                .result(productService.create(request, image))
                 .build();
     }
 
@@ -51,9 +50,10 @@ public class ProductController {
 
     @PutMapping("/update/{productId}")
     public ApiResponse<ProductResponse> update(@PathVariable Long productId,
-                                               @Valid @RequestBody ProductUpdateRequest request) {
+                                               @Valid @RequestPart ProductUpdateRequest request,
+                                               @RequestPart(required = false) MultipartFile image) {
         return ApiResponse.<ProductResponse>builder()
-                .result(productService.update(productId, request))
+                .result(productService.update(productId, request, image))
                 .build();
     }
 

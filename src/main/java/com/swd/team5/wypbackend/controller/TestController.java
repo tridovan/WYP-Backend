@@ -2,15 +2,15 @@ package com.swd.team5.wypbackend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swd.team5.wypbackend.dto.request.BrandCreateRequest;
 import com.swd.team5.wypbackend.dto.request.ProductCreateRequest;
-import com.swd.team5.wypbackend.dto.response.ApiResponse;
-import com.swd.team5.wypbackend.dto.response.PageResponse;
-import com.swd.team5.wypbackend.dto.response.ProductResponse;
-import com.swd.team5.wypbackend.dto.response.UserResponse;
+import com.swd.team5.wypbackend.dto.response.*;
 import com.swd.team5.wypbackend.entity.User;
+import com.swd.team5.wypbackend.service.BrandService;
 import com.swd.team5.wypbackend.service.CloudinaryService;
 import com.swd.team5.wypbackend.service.ProductService;
 import com.swd.team5.wypbackend.service.UserSerivce;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,6 +33,9 @@ public class TestController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private BrandService brandService;
 
     @PostMapping
     public ApiResponse<String> fileUpload(@RequestParam MultipartFile file){
@@ -88,6 +91,17 @@ public class TestController {
 
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.create(request, file))
+                .build();
+    }
+
+    @PutMapping("/update/{brandId}")
+    @Operation(description = "Cập nhật thương hiệu - http://localhost:8080/brands/update/{brandId}")
+    public ApiResponse<BrandResponse> update(@PathVariable Long brandId,
+                                             @Valid @RequestPart BrandCreateRequest request,
+                                             @RequestPart(required = false) MultipartFile image) {
+        return ApiResponse.<BrandResponse>builder()
+                .result(brandService.updateBrand(brandId, request, image))
+                .message("Brand updated successfully")
                 .build();
     }
 }
