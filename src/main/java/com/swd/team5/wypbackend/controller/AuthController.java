@@ -8,6 +8,7 @@ import com.swd.team5.wypbackend.dto.response.AuthResponseDTO;
 import com.swd.team5.wypbackend.dto.response.KeyValidationResponse;
 import com.swd.team5.wypbackend.service.AuthService;
 import com.swd.team5.wypbackend.service.UserSerivce;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +24,14 @@ public class AuthController {
     private UserSerivce userSerivce;
 
     @PostMapping("/token")
+    @Operation(description = "get jwt token")
     public ApiResponse<AuthResponse> token(@RequestBody AuthRequest request){
         return ApiResponse.<AuthResponse>builder()
                 .result(authService.authenticate(request))
                 .build();
 
     }
+    @Operation(description = "verify token to login")
     @PostMapping("/introspect")
     public ApiResponse<KeyValidationResponse> authenticate(@RequestBody KeyValidationRequest token) throws ParseException, JOSEException {
 
@@ -37,6 +40,7 @@ public class AuthController {
                 .build();
     }
 
+    @Operation(description = "log out account")
     @PostMapping("/logout")
     public ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
         return ApiResponse.<Void>builder()
@@ -44,6 +48,7 @@ public class AuthController {
                 .build();
     }
 
+    @Operation(description = "refresh token")
     @PostMapping("/refresh-token")
     public ApiResponse<AuthResponseDTO> refreshToken(@RequestBody RefreshTokenRequest request) throws ParseException, JOSEException {
         return ApiResponse.<AuthResponseDTO>builder()
@@ -51,6 +56,7 @@ public class AuthController {
                 .build();
     }
 
+    @Operation(description = "forgot password")
     @GetMapping("/forgot-password")
     public ApiResponse<Void> forgotPassword(@RequestParam String email){
         return ApiResponse.<Void>builder()
@@ -58,6 +64,7 @@ public class AuthController {
                 .build();
     }
 
+    @Operation(description = "reset password")
     @PostMapping("/reset-password/{email}")
     ApiResponse<Void> resetPassword(@PathVariable String email,@RequestBody ResetPasswordRequest request){
         return ApiResponse.<Void>builder()
