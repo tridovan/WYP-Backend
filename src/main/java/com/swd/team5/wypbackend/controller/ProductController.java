@@ -27,7 +27,7 @@ public class ProductController {
                 .build();
     }
     @GetMapping("/customer")
-    @Operation(description = "lay tat ca san pham cho khach hang http://localhost:8080/products")
+    @Operation(description = "lay tat ca san pham cho khach hang http://localhost:8080/products/customer")
     public ApiResponse<List<ProductResponse>> getAllForCustomer() {
         return ApiResponse.<List<ProductResponse>>builder()
                 .result(productService.getAll())
