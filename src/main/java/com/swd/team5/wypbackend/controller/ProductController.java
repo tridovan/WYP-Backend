@@ -8,6 +8,7 @@ import com.swd.team5.wypbackend.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,9 +20,10 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/create")
-    public ApiResponse<ProductResponse> create(@Valid @RequestBody ProductCreateRequest request) {
+    public ApiResponse<ProductResponse> create(@RequestParam MultipartFile file, @Valid @RequestBody ProductCreateRequest request) {
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         return ApiResponse.<ProductResponse>builder()
-                .result(productService.create(request))
+                .result(productService.create(request, file))
                 .build();
     }
 

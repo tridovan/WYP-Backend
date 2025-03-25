@@ -18,6 +18,8 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +30,9 @@ import java.util.regex.Pattern;
 
 @Service
 public class ProductService {
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @Autowired
     private ProductRepository productRepository;
@@ -41,7 +46,7 @@ public class ProductService {
     @Autowired
     private SearchRepository searchRepository;
 
-    public ProductResponse create(ProductCreateRequest request) {
+    public ProductResponse create(ProductCreateRequest request, MultipartFile file) {
         if (productRepository.existsByName(request.getName())) {
             throw new AppException(ErrorCode.EXISTED_PRODUCT_NAME);
         }
@@ -51,6 +56,7 @@ public class ProductService {
 
         Product product = productMapper.toProduct(request);
         product.setBrand(brand);
+        product.setImage(cloudinaryService.upload(file));
 
         return productMapper.toResponse(productRepository.save(product));
     }

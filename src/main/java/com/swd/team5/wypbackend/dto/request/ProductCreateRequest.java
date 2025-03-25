@@ -19,8 +19,6 @@ public class ProductCreateRequest {
 
     private String description;
 
-    private String image;
-
     @NotNull(message = "INVALID_SIZE")
     private String size;
 
