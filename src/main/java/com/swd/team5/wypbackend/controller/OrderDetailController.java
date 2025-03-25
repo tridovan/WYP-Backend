@@ -24,7 +24,7 @@ public class OrderDetailController {
                 .build();
     }
 
-    @PutMapping("/{orderDetailId}")
+    @PutMapping("/update/{orderDetailId}")
     public ApiResponse<OrderDetailResponse> update(@PathVariable String orderDetailId,
                                                    @RequestBody OrderDetailUpdateRequest request) {
         return ApiResponse.<OrderDetailResponse>builder()
@@ -32,7 +32,7 @@ public class OrderDetailController {
                 .build();
     }
 
-    @DeleteMapping("/{orderDetailId}")
+    @DeleteMapping("/delete/{orderDetailId}")
     public ApiResponse<Void> delete(@PathVariable String orderDetailId) {
         orderDetailService.delete(orderDetailId);
         return ApiResponse.<Void>builder()

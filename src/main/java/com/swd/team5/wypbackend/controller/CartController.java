@@ -37,7 +37,7 @@ public class CartController {
                 .build();
     }
 
-    @DeleteMapping("/{cartId}")
+    @DeleteMapping("/delete/{cartId}")
     public ApiResponse<Void> delete(@PathVariable String cartId) {
         cartService.delete(cartId);
         return ApiResponse.<Void>builder()

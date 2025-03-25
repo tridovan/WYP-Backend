@@ -39,7 +39,7 @@ public class ProductController {
                 .build();
     }
 
-    @PutMapping("/{productId}")
+    @PutMapping("/update/{productId}")
     public ApiResponse<ProductResponse> update(@PathVariable Long productId,
                                                @Valid @RequestBody ProductUpdateRequest request) {
         return ApiResponse.<ProductResponse>builder()
@@ -47,7 +47,7 @@ public class ProductController {
                 .build();
     }
 
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("/delete/{productId}")
     public ApiResponse<Void> delete(@PathVariable Long productId) {
         productService.delete(productId);
         return ApiResponse.<Void>builder()

@@ -24,7 +24,7 @@ public class CartItemController {
                 .build();
     }
 
-    @PutMapping("/{cartItemId}")
+    @PutMapping("/update/{cartItemId}")
     public ApiResponse<CartItemResponse> update(@PathVariable String cartItemId,
                                                 @RequestBody CartItemUpdateRequest request) {
         return ApiResponse.<CartItemResponse>builder()
@@ -32,7 +32,7 @@ public class CartItemController {
                 .build();
     }
 
-    @DeleteMapping("/{cartItemId}")
+    @DeleteMapping("/delete/{cartItemId}")
     public ApiResponse<Void> delete(@PathVariable String cartItemId) {
         cartItemService.delete(cartItemId);
         return ApiResponse.<Void>builder()
