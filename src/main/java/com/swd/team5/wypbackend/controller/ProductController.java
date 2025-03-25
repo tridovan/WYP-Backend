@@ -5,6 +5,7 @@ import com.swd.team5.wypbackend.dto.request.ProductUpdateRequest;
 import com.swd.team5.wypbackend.dto.response.ApiResponse;
 import com.swd.team5.wypbackend.dto.response.ProductResponse;
 import com.swd.team5.wypbackend.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -55,8 +56,12 @@ public class ProductController {
                 .build();
     }
 
+
+    @Operation(description = "search product " +
+            "cấu trúc các field sort field:asc " +
+            "http://localhost:8080/products/search?pageNo=1&pageSize=10&sorts=id:desc&sorts=username:asc ")
     @GetMapping("/search")
-    public ApiResponse<?> getAll(@RequestParam(defaultValue = "0", required = false) int pageNo,
+    public ApiResponse<?> advanceSearch(@RequestParam(defaultValue = "0", required = false) int pageNo,
                                  @RequestParam(defaultValue = "20", required = false) int pageSize,
                                  @RequestParam(required = false) String brand,
                                  @RequestParam(required = false) String sort,
