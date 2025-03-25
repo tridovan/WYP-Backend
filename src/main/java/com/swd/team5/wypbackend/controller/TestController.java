@@ -14,6 +14,7 @@ import com.swd.team5.wypbackend.service.UserSerivce;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -80,4 +81,13 @@ public class TestController {
                 .build();
     }
 
+    @PostMapping(value = "/create2")
+    public ApiResponse<ProductResponse> create3(
+            @RequestPart(name = "file") MultipartFile file,
+            @RequestPart(name = "json") @Valid ProductCreateRequest request) {
+
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.create(request, file))
+                .build();
+    }
 }
