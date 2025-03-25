@@ -1,5 +1,7 @@
 package com.swd.team5.wypbackend.dto.request;
 
+import com.swd.team5.wypbackend.entity.OrderDetailStatus;
+import com.swd.team5.wypbackend.entity.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,5 +14,5 @@ public class OrderDetailCreateRequest {
     private Boolean isCustomization;
     private Boolean isDeposit;
     private Integer price;
-    private String status;
+    private OrderDetailStatus status;
 }
