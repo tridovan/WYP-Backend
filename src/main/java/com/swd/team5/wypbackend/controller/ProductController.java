@@ -5,6 +5,7 @@ import com.swd.team5.wypbackend.dto.request.ProductUpdateRequest;
 import com.swd.team5.wypbackend.dto.response.ApiResponse;
 import com.swd.team5.wypbackend.dto.response.ProductResponse;
 import com.swd.team5.wypbackend.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,22 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/create")
+    @Operation(description = "tao them 1 product http://localhost:8080/products/create")
     public ApiResponse<ProductResponse> create(@Valid @RequestBody ProductCreateRequest request) {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.create(request))
                 .build();
     }
+    @GetMapping("/customer")
+    @Operation(description = "lay tat ca san pham cho khach hang http://localhost:8080/products")
+    public ApiResponse<List<ProductResponse>> getAllForCustomer() {
+        return ApiResponse.<List<ProductResponse>>builder()
+                .result(productService.getAll())
+                .build();
+    }
 
     @GetMapping
+    @Operation(description = "lay tat ca san pham cho nhan vien http://localhost:8080/products")
     public ApiResponse<List<ProductResponse>> getAll() {
         return ApiResponse.<List<ProductResponse>>builder()
                 .result(productService.getAll())
@@ -33,6 +43,7 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
+    @Operation(description = "lay san pham bang id http://localhost:8080/products/{productId}")
     public ApiResponse<ProductResponse> getById(@PathVariable Long productId) {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.getProductById(productId))
@@ -40,6 +51,7 @@ public class ProductController {
     }
 
     @PutMapping("/update/{productId}")
+    @Operation(description = "update san pham http://localhost:8080/cart-items/update/{productId}")
     public ApiResponse<ProductResponse> update(@PathVariable Long productId,
                                                @Valid @RequestBody ProductUpdateRequest request) {
         return ApiResponse.<ProductResponse>builder()
@@ -48,6 +60,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete/{productId}")
+    @Operation(description = "xoa 1 san pham http://localhost:8080/cart-items/delete/{productId}")
     public ApiResponse<Void> delete(@PathVariable Long productId) {
         productService.delete(productId);
         return ApiResponse.<Void>builder()
@@ -56,6 +69,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
+    @Operation(description = "lay tat ca nhung sap xep http://localhost:8080/products/search")
     public ApiResponse<?> getAll(@RequestParam(defaultValue = "0", required = false) int pageNo,
                                  @RequestParam(defaultValue = "20", required = false) int pageSize,
                                  @RequestParam(required = false) String brand,
