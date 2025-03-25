@@ -46,11 +46,15 @@ public class AuthService {
     @Autowired
     private EmailService emailService;
 
-    public AuthResponse authendicate(AuthRequest request){
-
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-
+    public AuthResponse authenticate(AuthRequest request){
+        User user;
+        if(request.getUsername().contains("@")){
+             user = userRepository.findByEmail(request.getUsername())
+                    .orElseThrow(() -> new AppException(ErrorCode.EMAIL_NOT_FOUND));
+        }else {
+             user = userRepository.findByUsername(request.getUsername())
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        }
         AuthResponse response = new AuthResponse();
         response.setAuth(false);
 
@@ -129,7 +133,7 @@ public class AuthService {
         forgetPasswordToken.setEmail(email);
         String id = forgotPasswordRepository.save(forgetPasswordToken).getId();
 
-        emailService.SendEmail(email, "Reset password token", id);
-        return "I have sent the token to " + email;
+        emailService.sendPasswordResetEmail(email, id);
+        return "Password reset instructions have been sent to " + email;
     }
 }

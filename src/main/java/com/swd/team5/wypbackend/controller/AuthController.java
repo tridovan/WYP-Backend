@@ -25,7 +25,7 @@ public class AuthController {
     @PostMapping("/token")
     public ApiResponse<AuthResponse> token(@RequestBody AuthRequest request){
         return ApiResponse.<AuthResponse>builder()
-                .result(authService.authendicate(request))
+                .result(authService.authenticate(request))
                 .build();
 
     }
