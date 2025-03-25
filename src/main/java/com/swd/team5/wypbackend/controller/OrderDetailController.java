@@ -17,7 +17,7 @@ public class OrderDetailController {
     @Autowired
     private OrderDetailService orderDetailService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ApiResponse<OrderDetailResponse> create(@RequestBody OrderDetailCreateRequest request) {
         return ApiResponse.<OrderDetailResponse>builder()
                 .result(orderDetailService.create(request))

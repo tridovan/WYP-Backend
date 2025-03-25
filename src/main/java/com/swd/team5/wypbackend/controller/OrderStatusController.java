@@ -17,7 +17,7 @@ public class OrderStatusController {
     @Autowired
     private OrderStatusService orderStatusService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ApiResponse<OrderStatusResponse> create(@RequestBody OrderStatusCreateRequest request) {
         return ApiResponse.<OrderStatusResponse>builder()
                 .result(orderStatusService.create(request))
