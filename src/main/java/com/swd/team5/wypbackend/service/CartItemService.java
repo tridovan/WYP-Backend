@@ -14,6 +14,7 @@ import com.swd.team5.wypbackend.repository.CartItemRepository;
 import com.swd.team5.wypbackend.repository.CartRepository;
 import com.swd.team5.wypbackend.repository.CustomizationRepository;
 import com.swd.team5.wypbackend.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,11 +64,16 @@ public class CartItemService {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new AppException(ErrorCode.CART_ITEM_NOT_EXISTED));
 
-        cartItemMapper.update(cartItem, request);
+        if (request.getQuantity() != null) {
+            cartItem.setQuantity(request.getQuantity()); // ✅ Gán trực tiếp
+        }
+
         cartItem = cartItemRepository.save(cartItem);
 
         return cartItemMapper.toResponse(cartItem);
     }
+
+
 
     public void delete(String cartItemId) {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
