@@ -5,6 +5,7 @@ import com.swd.team5.wypbackend.dto.request.OrderDetailUpdateRequest;
 import com.swd.team5.wypbackend.dto.response.OrderDetailResponse;
 import com.swd.team5.wypbackend.entity.Order;
 import com.swd.team5.wypbackend.entity.OrderDetail;
+import com.swd.team5.wypbackend.entity.OrderDetailStatus;
 import com.swd.team5.wypbackend.entity.Product;
 import com.swd.team5.wypbackend.enums.ErrorCode;
 import com.swd.team5.wypbackend.exception.AppException;
@@ -12,9 +13,11 @@ import com.swd.team5.wypbackend.mapper.OrderDetailMapper;
 import com.swd.team5.wypbackend.repository.OrderDetailRepository;
 import com.swd.team5.wypbackend.repository.OrderRepository;
 import com.swd.team5.wypbackend.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class OrderDetailService {
@@ -31,21 +34,40 @@ public class OrderDetailService {
         this.productRepository = productRepository;
         this.orderDetailMapper = orderDetailMapper;
     }
-
+    @Transactional
     public OrderDetailResponse create(OrderDetailCreateRequest request) {
-        Order order = orderRepository.findById(request.getOrderId())
-                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setOrder(orderRepository.findById(request.getOrderId())
+               .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED)));
+        orderDetail.setProduct(productRepository.findById(Long.parseLong(request.getProductId()))
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND)));
+        orderDetail.setQuantity(request.getQuantity());
+        orderDetail.setIsCustomization(request.getIsCustomization());
+        orderDetail.setIsDeposit(request.getIsDeposit());
+        orderDetail.setPrice(request.getPrice());
 
-        Product product = productRepository.findById(Long.parseLong(request.getProductId()))
-                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+        // ✅ Đặt trạng thái mặc định là PENDING khi tạo mới
+        orderDetail.setStatus(OrderDetailStatus.PENDING);
 
-        OrderDetail orderDetail = orderDetailMapper.toEntity(request);
-        orderDetail.setOrder(order);
-        orderDetail.setProduct(product);
+        orderDetailRepository.save(orderDetail);
 
-        orderDetail = orderDetailRepository.save(orderDetail);
-        return orderDetailMapper.toResponse(orderDetail);
+        return toOrderDetailResponse(orderDetail);
     }
+
+//    public OrderDetailResponse create(OrderDetailCreateRequest request) {
+//        Order order = orderRepository.findById(request.getOrderId())
+//                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+//
+//        Product product = productRepository.findById(Long.parseLong(request.getProductId()))
+//                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+//
+//        OrderDetail orderDetail = orderDetailMapper.toEntity(request);
+//        orderDetail.setOrder(order);
+//        orderDetail.setProduct(product);
+//
+//        orderDetail = orderDetailRepository.save(orderDetail);
+//        return orderDetailMapper.toResponse(orderDetail);
+//    }
 
     public OrderDetailResponse update(String orderDetailId, OrderDetailUpdateRequest request) {
         OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
@@ -70,4 +92,28 @@ public class OrderDetailService {
                 .map(orderDetailMapper::toResponse)
                 .toList();
     }
+    @Transactional
+    public OrderDetailResponse updateStatus(String orderDetailId, OrderDetailStatus status) {
+        OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_DETAIL_NOT_EXISTED));
+
+        orderDetail.setStatus(status);
+        orderDetailRepository.save(orderDetail);
+
+        return toOrderDetailResponse(orderDetail);
+    }
+    private OrderDetailResponse toOrderDetailResponse(OrderDetail orderDetail) {
+        OrderDetailResponse response = new OrderDetailResponse();
+        response.setId(orderDetail.getId());
+        response.setOrderId(orderDetail.getOrder().getId());
+        response.setProductId(String.valueOf(orderDetail.getProduct().getId()));
+        response.setQuantity(orderDetail.getQuantity());
+        response.setIsCustomization(orderDetail.getIsCustomization());
+        response.setIsDeposit(orderDetail.getIsDeposit());
+        response.setPrice(orderDetail.getPrice());
+        response.setStatus(orderDetail.getStatus()); // Trả về trực tiếp dưới dạng OrderDetailStatus
+        response.setCreatedAt(orderDetail.getCreatedAt());
+        return response;
+    }
+
 }
