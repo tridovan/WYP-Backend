@@ -46,6 +46,9 @@ public enum ErrorCode {
     CUSTOMIZATION_NOT_EXISTED(973, "Not found customization 😏😏😏", HttpStatus.BAD_REQUEST),
     CART_ITEM_NOT_EXISTED(972, "Cart item not existed 😏😏😏", HttpStatus.BAD_REQUEST),
 
+    // Promotion errors
+    PROMOTION_NOT_FOUND(968, "Promotion not found 😏😏😏", HttpStatus.BAD_REQUEST),
+
     FILE_ERROR(971,"Error at file upload 😏😏😏" , HttpStatus.BAD_REQUEST),
     EMAIL_NOT_FOUND(970,"Email not found 😏😏😏" , HttpStatus.BAD_REQUEST),
     ACCESS_DENIED(969,"You have not permission to access this feature ĐỒ NGỐC À 😏😏😏" , HttpStatus.BAD_REQUEST);
