@@ -4,6 +4,7 @@ import com.swd.team5.wypbackend.dto.request.OrderDetailCreateRequest;
 import com.swd.team5.wypbackend.dto.request.OrderDetailUpdateRequest;
 import com.swd.team5.wypbackend.dto.response.ApiResponse;
 import com.swd.team5.wypbackend.dto.response.OrderDetailResponse;
+import com.swd.team5.wypbackend.entity.OrderDetailStatus;
 import com.swd.team5.wypbackend.service.OrderDetailService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,4 +53,29 @@ public class OrderDetailController {
                 .result(orderDetailService.getAllByOrderId(orderId))
                 .build();
     }
+    @PutMapping("/confirm/{orderDetailId}")
+    @Operation(description = "xac nhan order details http://localhost:8080/order-details/confirm/{orderDetailId}")
+    public ApiResponse<OrderDetailResponse> confirmOrderDetail(@PathVariable String orderDetailId) {
+        return ApiResponse.<OrderDetailResponse>builder()
+                .result(orderDetailService.updateStatus(orderDetailId, OrderDetailStatus.CONFIRMED))
+                .build();
+    }
+
+    @PutMapping("/cancel/{orderDetailId}")
+    @Operation(description = "huy order details http://localhost:8080/order-details/cancel/{orderDetailId}")
+    public ApiResponse<OrderDetailResponse> cancelOrderDetail(@PathVariable String orderDetailId) {
+        return ApiResponse.<OrderDetailResponse>builder()
+                .result(orderDetailService.updateStatus(orderDetailId, OrderDetailStatus.CANCELLED))
+                .build();
+    }
+//    @PutMapping("/status/{orderDetailId}")
+//    @Operation(description = "cap nhat trang thai order details http://localhost:8080/order-details/status/{orderDetailId}")
+//    public ApiResponse<OrderDetailResponse> updateOrderDetailStatus(
+//            @PathVariable String orderDetailId,
+//            @RequestParam OrderDetailStatus status) {
+//        return ApiResponse.<OrderDetailResponse>builder()
+//                .result(orderDetailService.updateStatus(orderDetailId, status))
+//                .build();
+//    }
+
 }
