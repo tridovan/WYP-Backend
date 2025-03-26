@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CartItemUpdateRequest {
-    private Boolean isCustomization;
-    private String customizationId;
+//    private Boolean isCustomization;
+//    private String customizationId;
     private Integer quantity;
 }

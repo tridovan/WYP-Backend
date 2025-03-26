@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring")
 public interface CartItemMapper {
 
     @Mapping(target = "id", ignore = true)
@@ -20,8 +20,7 @@ public interface CartItemMapper {
     @Mapping(target = "customizationId", source = "customization.id")
     CartItemResponse toResponse(CartItem cartItem);
 
-    // Chỉ định rõ ràng nguồn cho từng thuộc tính
     @Mapping(target = "isCustomization", source = "request.isCustomization")
-    @Mapping(target = "quantity", source = "request.quantity")
+    @Mapping(target = "quantity", source = "request.quantity", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL) // ✅
     CartItem update(CartItem cartItem, CartItemUpdateRequest request);
 }
