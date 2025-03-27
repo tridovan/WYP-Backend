@@ -60,7 +60,7 @@ public class OrderDetailController {
                 .result(orderDetailService.updateStatus(orderDetailId, OrderDetailStatus.CONFIRMED))
                 .build();
     }
-
+    
     @PutMapping("/cancel/{orderDetailId}")
     @Operation(description = "huy order details http://localhost:8080/order-details/cancel/{orderDetailId}")
     public ApiResponse<OrderDetailResponse> cancelOrderDetail(@PathVariable String orderDetailId) {
