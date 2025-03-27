@@ -48,7 +48,7 @@ public enum ErrorCode {
 
     FILE_ERROR(971,"Error at file upload 😏😏😏" , HttpStatus.BAD_REQUEST),
     EMAIL_NOT_FOUND(970,"Email not found 😏😏😏" , HttpStatus.BAD_REQUEST),
-    INVALID_ORDER_STATUS(969,"Order Status not existed 😏😏😏" , HttpStatus.BAD_REQUEST);
+    INVALID_ORDER_STATUS(968,"Order Status not existed 😏😏😏" , HttpStatus.BAD_REQUEST);
 
 
     private int code;
