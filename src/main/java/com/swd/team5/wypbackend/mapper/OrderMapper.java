@@ -16,5 +16,7 @@ public interface OrderMapper {
 
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "addressId", source = "address.id")
+    @Mapping(target = "status", expression = "java(order.getStatus().name())") // Chuyển từ Enum thành String
+    @Mapping(target = "orderDetails", source = "orderDetails") // Ánh xạ danh sách OrderDetail
     OrderResponse toResponse(Order order);
 }
