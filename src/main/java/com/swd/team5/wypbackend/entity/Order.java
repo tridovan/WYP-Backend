@@ -33,7 +33,7 @@ public class Order {
 
     private String note;
 
-    private Double totalPrice;
+    private Integer totalPrice;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address")

@@ -147,4 +147,8 @@ public class ProductService {
                 .items(productResponses)
                 .build();
     }
+
+    public Product getProductByID(Long Id){
+        return productRepository.findById(Id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+    }
 }

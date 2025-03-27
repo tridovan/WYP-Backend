@@ -13,11 +13,6 @@ import java.util.List;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderCreateRequest {
-    private String userId;
-
-    private String note;
-
     private Address address;
-
-    private List<OrderDetailCreateRequest> orderDetailList = new ArrayList<>();
+    private List<OrderDetailCreateRequest> orderList;
 }

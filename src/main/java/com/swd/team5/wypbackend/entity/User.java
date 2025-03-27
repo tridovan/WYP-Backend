@@ -1,5 +1,6 @@
 package com.swd.team5.wypbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,5 +39,8 @@ public class User {
     private LocalDate createAt;
     @UpdateTimestamp
     private LocalDate updateAt;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Order> order;
 
 }
