@@ -19,10 +19,6 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.UUID) // Chuyển sang UUID cho kiểu String
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
-
     @OneToOne
     @JoinColumn(name = "product_id")
     private Product product;

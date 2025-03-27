@@ -35,11 +35,12 @@ public class Order {
 
     private Double totalPrice;
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address")
     private Address address;
 
-    @OneToMany(mappedBy = "order")
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetailList = new ArrayList<>();
 
     @CreationTimestamp

@@ -170,4 +170,9 @@ public class UserSerivce {
         user.setRole(role);
         return userMapper.toResponse(user);
     }
+
+    public User findUserById(String userId){
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+    }
 }

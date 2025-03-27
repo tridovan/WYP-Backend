@@ -1,6 +1,9 @@
 package com.swd.team5.wypbackend.dto.response;
 
+import com.swd.team5.wypbackend.entity.Order;
+import com.swd.team5.wypbackend.entity.Product;
 import com.swd.team5.wypbackend.enums.OrderStatus;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,13 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class OrderDetailResponse {
-    private String id;
-    private String orderId;
-    private String productId;
+    private Long productId;
     private Integer quantity;
-    private Boolean isCustomization;
-    private Boolean isDeposit;
     private Double price;
-    private OrderStatus status;
-    private LocalDateTime createdAt;
 }
