@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -31,6 +33,9 @@ public class User {
     private String lastName;
     private String phoneNumber;
     private boolean isActive;
-    private LocalDate createAt = LocalDate.now();
+    @CreationTimestamp
+    private LocalDate createAt;
+    @UpdateTimestamp
+    private LocalDate updateAt;
 
 }

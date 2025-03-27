@@ -29,7 +29,7 @@ public class RoleService {
     @Autowired
     private RoleMapper roleMapper;
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RoleResponse create(RoleRequest request) {
         if(roleRepository.existsById(request.getName())){
             throw new AppException(ErrorCode.EXISTED_ROLE);
@@ -41,14 +41,14 @@ public class RoleService {
         return roleMapper.toResponse(roleRepository.save(role));
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<RoleResponse> getAll() {
         List<Role> roles = roleRepository.findAll();
         return roles.stream().map(roleMapper::toResponse).toList();
     }
 
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delete(String roleName) {
         Role role = roleRepository.findById(roleName)
                         .orElseThrow(() -> new AppException(ErrorCode.INVALID_ROLE));
@@ -56,7 +56,7 @@ public class RoleService {
         return "Delete successfully 👙";
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RoleResponse update(String roleName, RoleRequest request) {
         Role role = roleRepository.findById(roleName)
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_ROLE));

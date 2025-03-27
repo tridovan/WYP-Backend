@@ -8,6 +8,7 @@ import com.swd.team5.wypbackend.repository.BrandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,13 +19,15 @@ public class BrandService {
 
     private final BrandRepository brandRepository;
     private final BrandMapper brandMapper;
+    private final CloudinaryService cloudinaryService;
 
     @Transactional
-    public BrandResponse createBrand(BrandCreateRequest request) {
+    public BrandResponse createBrand(BrandCreateRequest request, MultipartFile image) {
         if (brandRepository.existsByName(request.getName())) {
             throw new IllegalArgumentException("Brand with name '" + request.getName() + "' already exists");
         }
         Brand brand = brandMapper.toEntity(request);
+        brand.setImage(cloudinaryService.upload(image));
         Brand savedBrand = brandRepository.save(brand);
         return brandMapper.toResponse(savedBrand);
     }
@@ -42,7 +45,7 @@ public class BrandService {
     }
 
     @Transactional
-    public BrandResponse updateBrand(Long id, BrandCreateRequest request) {
+    public BrandResponse updateBrand(Long id, BrandCreateRequest request, MultipartFile image) {
         Brand brand = brandRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Brand with id '" + id + "' not found"));
 
@@ -51,6 +54,7 @@ public class BrandService {
         }
 
         brand.setName(request.getName());
+        brand.setImage(cloudinaryService.upload(image));
         Brand updatedBrand = brandRepository.save(brand);
         return brandMapper.toResponse(updatedBrand);
     }

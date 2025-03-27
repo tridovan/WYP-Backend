@@ -21,6 +21,9 @@ public class SearchRepository {
     private EntityManager entityManager;
 
     public List<Product> advanceSearchProduct(int pageNo, int pageSize, String brand, String sort, List<SearchCriteria> criteriaList){
+        if(pageNo > 0){
+            pageNo --;
+        }
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Product> query = criteriaBuilder.createQuery(Product.class);
         Root<Product> root = query.from(Product.class);

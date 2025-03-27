@@ -7,6 +7,7 @@ import com.swd.team5.wypbackend.dto.response.ProductResponse;
 import com.swd.team5.wypbackend.dto.response.UserResponse;
 import com.swd.team5.wypbackend.entity.Brand;
 import com.swd.team5.wypbackend.entity.Product;
+import com.swd.team5.wypbackend.entity.User;
 import com.swd.team5.wypbackend.enums.ErrorCode;
 import com.swd.team5.wypbackend.exception.AppException;
 import com.swd.team5.wypbackend.mapper.ProductMapper;
@@ -16,8 +17,12 @@ import com.swd.team5.wypbackend.repository.SearchRepository;
 import com.swd.team5.wypbackend.repository.criteria.SearchCriteria;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +33,9 @@ import java.util.regex.Pattern;
 
 @Service
 public class ProductService {
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @Autowired
     private ProductRepository productRepository;
@@ -41,7 +49,10 @@ public class ProductService {
     @Autowired
     private SearchRepository searchRepository;
 
-    public ProductResponse create(ProductCreateRequest request) {
+    @Autowired
+    private PageService pageService;
+
+    public ProductResponse create(ProductCreateRequest request, MultipartFile image) {
         if (productRepository.existsByName(request.getName())) {
             throw new AppException(ErrorCode.EXISTED_PRODUCT_NAME);
         }
@@ -51,6 +62,7 @@ public class ProductService {
 
         Product product = productMapper.toProduct(request);
         product.setBrand(brand);
+        product.setImage(cloudinaryService.upload(image));
 
         return productMapper.toResponse(productRepository.save(product));
     }
@@ -61,7 +73,7 @@ public class ProductService {
                 .toList();
     }
 
-    public ProductResponse update(Long productId, ProductUpdateRequest request) {
+    public ProductResponse update(Long productId, ProductUpdateRequest request, MultipartFile image) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
 
@@ -72,7 +84,7 @@ public class ProductService {
                     .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_FOUND));
             product.setBrand(brand);
         }
-
+        product.setImage(cloudinaryService.upload(image));
         return productMapper.toResponse(productRepository.save(product));
     }
 
@@ -113,6 +125,23 @@ public class ProductService {
                 .totalElement(responses.size())
                 .sortBy(new String[] {sort})
                 .items(responses)
+                .build();
+    }
+
+    public PageResponse<?> getAllProductsSortBy(int pageNo, int pageSize, String... sorts){
+
+        Pageable pageable = pageService.pageEngine(pageNo, pageSize, sorts);
+        Page<Product> page = productRepository.findAll(pageable);
+        List<ProductResponse> productResponses = page.getContent()
+                .stream().map(productMapper::toResponse).toList();
+
+        return PageResponse.builder()
+                .pageNo(pageNo)
+                .pageSize(pageSize)
+                .totalPage(page.getTotalPages())
+                .totalElement(productResponses.size())
+                .sortBy(sorts)
+                .items(productResponses)
                 .build();
     }
 }

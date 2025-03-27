@@ -6,6 +6,7 @@ import com.swd.team5.wypbackend.dto.request.UserUpdateRequest;
 import com.swd.team5.wypbackend.dto.response.PageResponse;
 import com.swd.team5.wypbackend.dto.response.UserResponse;
 import com.swd.team5.wypbackend.entity.ForgetPasswordToken;
+import com.swd.team5.wypbackend.entity.Role;
 import com.swd.team5.wypbackend.entity.User;
 import com.swd.team5.wypbackend.enums.ErrorCode;
 import com.swd.team5.wypbackend.exception.AppException;
@@ -159,5 +160,14 @@ public class UserSerivce {
                 .sortBy(sorts)
                 .items(userResponses)
                 .build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UserResponse updateRole(String userId, String roleName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        Role role = roleRepository.findById(roleName).orElseThrow(() -> new AppException(ErrorCode.INVALID_ROLE));
+        user.setRole(role);
+        return userMapper.toResponse(user);
     }
 }
