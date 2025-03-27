@@ -14,6 +14,7 @@ import com.swd.team5.wypbackend.mapper.OrderDetailMapper;
 import com.swd.team5.wypbackend.mapper.OrderMapper;
 import com.swd.team5.wypbackend.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +55,22 @@ public class OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
         order.setStatus(OrderStatus.valueOf(status.toUpperCase()));
         return orderRepository.save(order);
+    }
+
+    public List<Order> getCartByUserId(String userId) {
+        User user = userSerivce.findUserById(userId);
+        return orderRepository.findByUser(user);
+    }
+
+    public List<Order> getCartByUsername(String username) {
+        User user = userSerivce.findUserUsername(username);
+        return orderRepository.findByUser(user);
+    }
+
+    public List<Order> getAll(String status) {
+        if(Strings.isNotBlank(status)) {
+            return orderRepository.findAllByStatus(OrderStatus.valueOf(status.toUpperCase()));
+        }else
+            return orderRepository.findAll();
     }
 }

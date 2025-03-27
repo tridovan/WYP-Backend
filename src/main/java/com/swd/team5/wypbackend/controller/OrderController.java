@@ -56,4 +56,26 @@ public class OrderController {
 //                .result(orderService.update(orderId, status))
 //                .build();
 //    }
+
+    @GetMapping("/get-order/{userId}")
+    public ApiResponse<?> getOrder(@PathVariable String userId){
+        return ApiResponse.builder()
+                .result(orderService.getCartByUserId(userId))
+                .build();
+    }
+
+    @GetMapping("/get-myorder")
+    public ApiResponse<?> getMyOrder(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ApiResponse.builder()
+                .result(orderService.getCartByUsername(authentication.getName()))
+                .build();
+    }
+
+    @GetMapping("/get-all")
+    public ApiResponse<?> getAll(@RequestParam(required = false) String status){
+        return ApiResponse.builder()
+                .result(orderService.getAll(status))
+                .build();
+    }
 }
