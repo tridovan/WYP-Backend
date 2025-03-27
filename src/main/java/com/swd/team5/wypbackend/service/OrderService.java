@@ -43,9 +43,19 @@ public class OrderService {
         request.setAddress(orderCreateRequest.getAddress());
         List<OrderDetail> orderDetailList = orderCreateRequest.getOrderList()
                 .stream().map(requestItem -> new OrderDetail(productService.getProductByID(requestItem.getProductId()), requestItem.getQuantity(), productService.getProductByID(requestItem.getProductId()).getPrice() * requestItem.getQuantity())).toList();
+        orderDetailList.forEach(detail -> {if(detail.getQuantity() > detail.getProduct().getQuantity()){
+            throw new AppException(ErrorCode.INVALID_QUANTITY);
+        }else{
+            detail.getProduct().setQuantity(detail.getProduct().getQuantity() - detail.getQuantity());
+        }
+        });
+
+
         request.setOrderDetailList(orderDetailList);
         request.setTotalPrice(orderDetailList.stream().mapToInt(detail -> detail.getPrice() * detail.getQuantity()).sum());
         request.setStatus(OrderStatus.PENDING);
+
+
 
         return orderRepository.save(request);
     }
