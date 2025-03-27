@@ -7,7 +7,9 @@ import com.swd.team5.wypbackend.entity.Address;
 import com.swd.team5.wypbackend.entity.Order;
 import com.swd.team5.wypbackend.entity.OrderDetail;
 import com.swd.team5.wypbackend.entity.User;
+import com.swd.team5.wypbackend.enums.ErrorCode;
 import com.swd.team5.wypbackend.enums.OrderStatus;
+import com.swd.team5.wypbackend.exception.AppException;
 import com.swd.team5.wypbackend.mapper.OrderDetailMapper;
 import com.swd.team5.wypbackend.mapper.OrderMapper;
 import com.swd.team5.wypbackend.repository.*;
@@ -48,4 +50,9 @@ public class OrderService {
     }
 
 
+    public Order update(String orderId, String status) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+        order.setStatus(OrderStatus.valueOf(status.toUpperCase()));
+        return orderRepository.save(order);
+    }
 }
