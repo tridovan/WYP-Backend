@@ -20,7 +20,7 @@ public interface CartItemMapper {
     @Mapping(target = "customizationId", source = "customization.id")
     CartItemResponse toResponse(CartItem cartItem);
 
-    @Mapping(target = "isCustomization", source = "request.isCustomization")
-    @Mapping(target = "quantity", source = "request.quantity", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL) // ✅
-    CartItem update(CartItem cartItem, CartItemUpdateRequest request);
+//    @Mapping(target = "isCustomization", source = "request.isCustomization")
+//    @Mapping(target = "quantity", source = "request.quantity", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL) // ✅
+//    CartItem update(CartItem cartItem, CartItemUpdateRequest request);
 }

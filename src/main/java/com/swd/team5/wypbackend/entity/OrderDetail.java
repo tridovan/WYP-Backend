@@ -1,5 +1,6 @@
 package com.swd.team5.wypbackend.entity;
 
+import com.swd.team5.wypbackend.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,15 +23,13 @@ public class OrderDetail {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
     private Integer quantity;
-    private Boolean isCustomization;
-    private Boolean isDeposit;
-    private Integer price;
-    @Enumerated(EnumType.STRING) // Lưu dưới dạng chuỗi trong DB
-    private OrderDetailStatus status;
+
+    private Double price;
+
     private LocalDateTime createdAt = LocalDateTime.now();
 }

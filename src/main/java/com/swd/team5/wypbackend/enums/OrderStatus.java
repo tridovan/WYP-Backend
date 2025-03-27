@@ -1,6 +1,6 @@
-package com.swd.team5.wypbackend.entity;
+package com.swd.team5.wypbackend.enums;
 
-public enum OrderDetailStatus {
+public enum OrderStatus {
     PENDING,       // Đang chờ xử lý
     CONFIRMED,     // Đã xác nhận
     PROCESSING,    // Đang xử lý

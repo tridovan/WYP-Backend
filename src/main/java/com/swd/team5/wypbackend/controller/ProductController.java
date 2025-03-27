@@ -54,7 +54,7 @@ public class ProductController {
     @Operation(description = "cập nhật sản phẩm")
     @PutMapping("/update/{productId}")
     public ApiResponse<ProductResponse> update(@PathVariable Long productId,
-                                               @Valid @RequestPart ProductUpdateRequest request,
+                                               @Valid @RequestPart(required = false) ProductUpdateRequest request,
                                                @RequestPart(required = false) MultipartFile image) {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.update(productId, request, image))

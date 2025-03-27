@@ -21,6 +21,7 @@ public class Product {
 
     @Lob
     private String image;
+    private String color;
     private String size;
     private Integer price;
     private Integer quantity;

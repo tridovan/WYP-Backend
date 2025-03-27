@@ -1,6 +1,7 @@
 package com.swd.team5.wypbackend.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -18,6 +19,8 @@ public class ProductUpdateRequest {
     private String description;
 
     private Double price;
+
+    private String color;
 
     private Integer quantity;
 

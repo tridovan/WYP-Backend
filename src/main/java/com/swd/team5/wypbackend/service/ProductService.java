@@ -77,14 +77,17 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        productMapper.updateProduct(product, request);
-
-        if (request.getBrandId() != null) {
-            Brand brand = brandRepository.findById(request.getBrandId())
-                    .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_FOUND));
-            product.setBrand(brand);
+        if(Objects.nonNull(request)) {
+            productMapper.updateProduct(product, request);
+            if (request.getBrandId() != null) {
+                Brand brand = brandRepository.findById(request.getBrandId())
+                        .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_FOUND));
+                product.setBrand(brand);
+            }
         }
-        product.setImage(cloudinaryService.upload(image));
+        if(Objects.nonNull(image)) {
+            product.setImage(cloudinaryService.upload(image));
+        }
         return productMapper.toResponse(productRepository.save(product));
     }
 

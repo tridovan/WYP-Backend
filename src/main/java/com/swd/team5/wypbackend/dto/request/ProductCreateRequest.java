@@ -25,6 +25,9 @@ public class ProductCreateRequest {
     @NotNull(message = "INVALID_PRICE")
     private Double price;
 
+    @NotNull(message = "INVALID_COLOR")
+    private String color;
+
     @NotNull(message = "INVALID_QUANTITY")
     private Integer quantity;
 

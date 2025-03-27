@@ -1,11 +1,16 @@
 package com.swd.team5.wypbackend.entity;
 
+import com.swd.team5.wypbackend.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,13 +28,23 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
     private String note;
-    private Integer totalPrice;
+
+    private Double totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "address")
     private Address address;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @OneToMany(mappedBy = "order")
+    private List<OrderDetail> orderDetailList = new ArrayList<>();
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updateAt;
 }

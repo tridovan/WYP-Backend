@@ -1,6 +1,6 @@
 package com.swd.team5.wypbackend.dto.response;
 
-import com.swd.team5.wypbackend.entity.OrderDetailStatus;
+import com.swd.team5.wypbackend.enums.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +15,7 @@ public class OrderDetailResponse {
     private Integer quantity;
     private Boolean isCustomization;
     private Boolean isDeposit;
-    private Integer price;
-    private OrderDetailStatus status;
+    private Double price;
+    private OrderStatus status;
     private LocalDateTime createdAt;
 }

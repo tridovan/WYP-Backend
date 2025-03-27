@@ -1,6 +1,7 @@
 package com.swd.team5.wypbackend.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -20,6 +21,8 @@ public class ProductResponse {
     private String size;
 
     private String image;
+
+    private String color;
 
     private Double price;
 
